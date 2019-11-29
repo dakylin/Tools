@@ -27,7 +27,7 @@ public:
     virtual ~LinuxIni();
 public:
     bool  GetInt(const char* mAttr, const char* cAttr, int &nRes );
-    bool GetStr(const char* mAttr, const char* cAttr, char *cValue );
+    bool GetStr(const char* mAttr, const char* cAttr, char *cValue, size_t nSize );
     INI_RES OpenFile(const char* pathName, const char* type);
     INI_RES CloseFile();
 protected:

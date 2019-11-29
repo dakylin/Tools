@@ -117,16 +117,18 @@ bool LinuxIni::GetInt(const char* mAttr, const char* cAttr, int &nRes )
  return false;
 }
 
-bool LinuxIni::GetStr(const char* mAttr, const char* cAttr, char *cValue )
+bool LinuxIni::GetStr(const char* mAttr, const char* cAttr, char *cValue, size_t nSize )
 {
  memset( m_szKey,0,sizeof(m_szKey) );
  
  if( INI_SUCCESS != GetKey( mAttr,cAttr,m_szKey ) )
  {
   //strcpy( m_szKey,"NULL" );
+  memset( cValue,0,nSize );
   return false;
  }
- strcpy(cValue, m_szKey);
+ strncpy(cValue, m_szKey, nSize);
+ //strcpy(cValue, m_szKey);
  return true;;
 }
 
@@ -135,8 +137,8 @@ int main()
 	std::string INIFile="/home/daniel/text.ini";
 	LinuxIni  ini;
 	ini.OpenFile(INIFile.c_str(), "r");
-	char pVal1[100] = {0}; 
-	bool ret1 = ini.GetStr("Section1","key2", pVal1);
+	char pVal1[3] = {0}; 
+	bool ret1 = ini.GetStr("Section1","key2", pVal1, 2);
 	if (ret1)
 		printf("pVal1=%s.\n",pVal1);
 	int  nKey = -1;
