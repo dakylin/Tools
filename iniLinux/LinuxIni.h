@@ -26,8 +26,8 @@ public:
 	virtual ~LinuxIni();
 
 public:
-	bool GetInt(const char *mAttr, const char *cAttr, int &nRes);
-	bool GetStr(const char *mAttr, const char *cAttr, char *cValue, size_t nSize);
+	INI_RES GetInt(const char *mAttr, const char *cAttr, int &nRes);
+	INI_RES GetStr(const char *mAttr, const char *cAttr, char *cValue, size_t nSize);
 	INI_RES OpenFile(const char *pathName, const char *type);
 	INI_RES CloseFile();
 
@@ -36,7 +36,7 @@ protected:
 
 protected:
 	FILE *m_fp;
-	char m_szKey[CONFIGLEN];
+	//char m_szKey[CONFIGLEN];
 	MAINKEYMAP m_Map;
 };
 

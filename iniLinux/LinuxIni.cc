@@ -5,7 +5,7 @@
 
 LinuxIni::LinuxIni()
 {
-	memset(m_szKey, 0, sizeof(m_szKey));
+	//memset(m_szKey, 0, sizeof(m_szKey));
 	m_fp = NULL;
 }
 
@@ -105,47 +105,33 @@ INI_RES LinuxIni::GetKey(const char *mAttr, const char *cAttr, char *pValue)
 	return INI_SUCCESS;
 }
 
-bool LinuxIni::GetInt(const char *mAttr, const char *cAttr, int &nRes)
+INI_RES LinuxIni::GetInt(const char *mAttr, const char *cAttr, int &nRes)
 {
 	nRes = 0;
-	memset(m_szKey, 0, sizeof(m_szKey));
-	if (INI_SUCCESS == GetKey(mAttr, cAttr, m_szKey))
+	char szKey[CONFIGLEN];
+	memset(szKey, 0, sizeof(szKey));
+	INI_RES ret = GetKey(mAttr, cAttr, szKey);
+	if (INI_SUCCESS == ret)
 	{
-		nRes = atoi(m_szKey);
-		return true;
+		nRes = atoi(szKey);
+		return INI_SUCCESS;
 	}
 	
-	return false;
+	return ret;
 }
 
-bool LinuxIni::GetStr(const char *mAttr, const char *cAttr, char *cValue, size_t nSize)
+INI_RES LinuxIni::GetStr(const char *mAttr, const char *cAttr, char *cValue, size_t nSize)
 {
-	memset(m_szKey, 0, sizeof(m_szKey));
-
-	if (INI_SUCCESS != GetKey(mAttr, cAttr, m_szKey))
+	char szKey[CONFIGLEN];
+	memset(szKey, 0, sizeof(szKey));
+	INI_RES ret = GetKey(mAttr, cAttr, szKey);
+	if (INI_SUCCESS != ret)
 	{
 		//strcpy( m_szKey,"NULL" );
 		memset(cValue, 0, nSize);
-		return false;
+		return ret;
 	}
-	strncpy(cValue, m_szKey, nSize);
-	//strcpy(cValue, m_szKey);
-	return true;
-	;
+	strncpy(cValue, szKey, nSize);
+	return INI_SUCCESS;
 }
 
-int main()
-{
-	std::string INIFile = "/home/daniel/text.ini";
-	LinuxIni ini;
-	ini.OpenFile(INIFile.c_str(), "r");
-	char pVal1[3] = {0};
-	bool ret1 = ini.GetStr("Section1", "key2", pVal1, 2);
-	if (ret1)
-		printf("pVal1=%s.\n", pVal1);
-	int nKey = -1;
-	bool ret2 = ini.GetInt("Section2", "key1", nKey);
-	printf("nKey=%d.\n", nKey);
-
-	printf("pVal1=%s, nKey=%d.\n", pVal1, nKey);
-}
