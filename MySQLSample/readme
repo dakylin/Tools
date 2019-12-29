@@ -1,0 +1,13 @@
+1. MySQL Server IP: 192.168.75.130
+2. The server config should allow remote access
+3. Set the env in .bash_profile for MySQL lib
+	Here is the sample in my RH VM:
+export MYSQL_HOME=/daniel/mysql
+export LD_LIBRARY_PATH=$MYSQL_HOME/lib:$LD_LIBRARY_PATH
+PATH=$PATH:$HOME/.local/bin:$HOME/bin
+export PATH
+
+4. In the Makefile, MYSQL_HOME is set to build
+	In the .bash_profile, MYSQL_HOME is set to run
+
+5. The machine which used to run the sample does not need to install MySQL, but it does need the libs
