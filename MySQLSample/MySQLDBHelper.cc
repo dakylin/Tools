@@ -51,17 +51,14 @@ bool MySQLDBHelper::ExecQuerySQL(std::string sql)
 	else
 	{
 		result = mysql_use_result(connection);
-
-		for (int i = 0; i < mysql_field_count(connection); ++i)
+		size_t numfields = mysql_field_count(connection);
+		while (true)
 		{
 			row = mysql_fetch_row(result);
-			if (row <= 0)
+			if (row <= 0) break;
+			for (size_t i = 0; i < numfields; i++)
 			{
-				break;
-			}
-			for (int j = 0; j < mysql_num_fields(result); ++j)
-			{
-				std::cout << row[j] << " ";
+				std::cout << row[i] << " ";
 			}
 			std::cout << std::endl;
 		}
