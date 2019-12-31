@@ -10,7 +10,7 @@ MySQLDBHelper::MySQLDBHelper()
 
 MySQLDBHelper::~MySQLDBHelper()
 {
-
+	MySQLDBConn::getInstance().Disconnect();
 }
 
 bool MySQLDBHelper::InitMySQLConn(const std::string &host, const std::string &user, const std::string &pwd, const std::string &db_name)
