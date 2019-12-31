@@ -1,57 +1,50 @@
+#include <mysql.h>
+#include "MySQLDBConn.h"
 #include "MySQLDBHelper.h"
-
 #include <iostream>
 
 MySQLDBHelper::MySQLDBHelper()
 {
-	m_Status = NONE;
-	connection = mysql_init(NULL);
-	if (NULL == connection)
-	{
-		std::cout << "Connection init failed" << std::endl;
-	}
-	m_Status = Init;
+	
 }
 
 MySQLDBHelper::~MySQLDBHelper()
 {
-	if (NULL != connection)
-		mysql_close(connection);
-	m_Status = Closed;
+
 }
 
-bool MySQLDBHelper::Connect(std::string host, std::string user, std::string pwd, std::string db_name)
+bool MySQLDBHelper::InitMySQLConn(const std::string &host, const std::string &user, const std::string &pwd, const std::string &db_name)
 {
-	if (m_Status != Init)
-		return false;
+	bool ret = MySQLDBConn::getInstance().InitConn();
+	if (!ret) return ret;
+	ret = MySQLDBConn::getInstance().Connect(host, user, pwd, db_name);
+	return ret;
+}
 
-	mysql_options(connection, MYSQL_READ_DEFAULT_GROUP, "socket");
 
-	connection = mysql_real_connect(connection, host.c_str(),
-									user.c_str(), pwd.c_str(), db_name.c_str(), 0, NULL, 0);
-	if (connection == NULL)
+bool MySQLDBHelper::ExecQuerySQL(const std::string &sql, unsigned long length)
+{
+	bool ret = MySQLDBConn::getInstance().ExecSQLReady();
+	if (!ret) 
 	{
-		std::cout << "Connection connect failed" << std::endl;
-		return false;
+		std::cout << "MySQL connection is not ready!" << std::endl;
+		return ret;
 	}
-	m_Status = Connected;
-	return true;
-}
+	//if (m_Status != Connected)
+	//	return false;
 
-bool MySQLDBHelper::ExecQuerySQL(std::string sql)
-{
-	if (m_Status != Connected)
-		return false;
-
-	if (mysql_query(connection, sql.c_str()))
+	//if (mysql_query(connection, sql.c_str()))
+	if (mysql_real_query(
+		MySQLDBConn::getInstance().getConnection(), 
+		sql.c_str(), length))
 	{
 		std::cout << "Execute SQL failed" << std::endl;
 		return false;
 	}
 	else
 	{
-		result = mysql_use_result(connection);
-		size_t numfields = mysql_field_count(connection);
+		result = mysql_use_result(MySQLDBConn::getInstance().getConnection());	
+		size_t numfields = mysql_field_count(MySQLDBConn::getInstance().getConnection());
 		while (true)
 		{
 			row = mysql_fetch_row(result);
@@ -67,12 +60,13 @@ bool MySQLDBHelper::ExecQuerySQL(std::string sql)
 	}
 }
 
-bool MySQLDBHelper::ExecSQL(std::string sql)
+bool MySQLDBHelper::ExecSQL(const std::string &sql, unsigned long length)
 {
-	if (m_Status != Connected)
-		return false;
+	//if (m_Status != Connected)
+	//	return false;
 
-	if (mysql_query(connection, sql.c_str()))
+	//if (mysql_query(connection, sql.c_str()))
+	if (mysql_real_query(MySQLDBConn::getInstance().getConnection(), sql.c_str(), length))
 	{
 		return false;
 	}

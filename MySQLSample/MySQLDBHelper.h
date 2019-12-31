@@ -1,29 +1,22 @@
 #ifndef _MY_SQL_DB_HELPER_H_
 #define _MY_SQL_DB_HELPER_H_
 
-#include <mysql.h>
 #include <string>
 
-enum ConnStatus
-{
-	NONE,
-	Init,
-	Connected,
-	Closed
-};
+
 
 class MySQLDBHelper
 {
 public:
 	MySQLDBHelper();
 	~MySQLDBHelper();
-	bool Connect(std::string host, std::string user, std::string pwd, std::string db_name);
-	bool ExecQuerySQL(std::string sql);
-	bool ExecSQL(std::string sql);
+	bool InitMySQLConn(const std::string &host, const std::string &user, const std::string &pwd, const std::string &db_name);
+	//bool Connect(std::string host, std::string user, std::string pwd, std::string db_name);
+	bool ExecQuerySQL(const std::string &sql, unsigned long length);
+	bool ExecSQL(const std::string &sql, unsigned long length);
 
 private:
-	ConnStatus m_Status;
-	MYSQL *connection;
+	//MySQLDBConn *m_Conn;
 	MYSQL_RES *result;
 	MYSQL_ROW row;
 };
