@@ -1,11 +1,13 @@
 #include <mysql.h>
-#include "MySQLDBConn.h"
 #include <iostream>
+#include "MySQLDBConn.h"
+
+
 
 MySQLDBConn::MySQLDBConn()
 {
 	m_Status = NONE;
-	connection = NULL;
+	m_Connection = NULL;
 }
 
 MySQLDBConn::~MySQLDBConn()
@@ -24,8 +26,8 @@ MySQLDBConn & MySQLDBConn::operator=(const MySQLDBConn &)
 
 bool MySQLDBConn::InitConn()
 {
-	connection = mysql_init(NULL);
-	if (NULL == connection)
+	m_Connection = mysql_init(NULL);
+	if (NULL == m_Connection)
 	{
 		std::cout << "Connection init failed" << std::endl;
 		return false;
@@ -41,10 +43,10 @@ bool MySQLDBConn::Connect(const std::string &host, const std::string &user, cons
 		std::cout << "Cannot connect before init" << std::endl;
 		return false;
 	}
-	mysql_options(connection, MYSQL_READ_DEFAULT_GROUP, "socket");
-	connection = mysql_real_connect(connection, host.c_str(),
+	//mysql_options(m_Connection, MYSQL_READ_DEFAULT_GROUP, "socket");
+	m_Connection = mysql_real_connect(m_Connection, host.c_str(),
 									user.c_str(), pwd.c_str(), db_name.c_str(), 0, NULL, 0);
-	if (connection == NULL)
+	if (m_Connection == NULL)
 	{
 		std::cout << "Connection connect failed" << std::endl;
 		return false;
@@ -53,16 +55,33 @@ bool MySQLDBConn::Connect(const std::string &host, const std::string &user, cons
 	return true;
 }
 
+bool MySQLDBConn::ResetConn()
+{
+	if (m_Status == Connected) return true;
+	if (m_Status == Closed) 
+	{
+		delete m_Connection;
+		m_Connection = NULL;
+		return InitConn();
+	}
+	else
+	{
+		std::cout << "Cannot call Reset before close connection!" << std::endl;
+		return false;
+	}
+	
+}
+
 void MySQLDBConn::Disconnect()
 {
-	if (NULL != connection && m_Status == Connected)
-		mysql_close(connection);
+	if (NULL != m_Connection && ExecSQLReady())
+		mysql_close(m_Connection);
 	m_Status = Closed;
 }
 
 MYSQL* MySQLDBConn::getConnection() const
 {
-	return connection;
+	return m_Connection;
 }
 
 bool MySQLDBConn::ExecSQLReady() const

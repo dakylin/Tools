@@ -2,7 +2,7 @@
 #define _MY_SQL_DB_HELPER_H_
 
 #include <string>
-
+#include "MySQLDBConn.h"
 
 
 class MySQLDBHelper
@@ -16,9 +16,11 @@ public:
 	bool ExecSQL(const std::string &sql, unsigned long length);
 
 private:
-	//MySQLDBConn *m_Conn;
+	MySQLDBConn *m_DBConnection;
 	MYSQL_RES *result;
 	MYSQL_ROW row;
+	pthread_mutex_t m_Mutex;	
+	
 };
 
 #endif

@@ -19,7 +19,7 @@ MYSQL_ROOT = /daniel/mysql
 #INC=$(ODBCROOT)/include
 #HEADER_PATH=-I$(INC) ./
 #LIB_PATH =-L$(ODBCROOT)/lib
-HEADER_PATH=-I$(MYSQL_ROOT)/include
+HEADER_PATH=-I$(MYSQL_ROOT)/include ./
 
 LIBS=-L$(MYSQL_ROOT)/lib -Wl,-R,$(MYSQL_ROOT)/lib -lmysqlclient -lpthread -lm -lrt -lssl -lcrypto -ldl
 

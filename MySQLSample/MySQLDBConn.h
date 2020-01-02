@@ -13,7 +13,7 @@ enum ConnStatus
 
 class MySQLDBConn
 {
-private:
+public:
 	MySQLDBConn();
 	~MySQLDBConn();
 	MySQLDBConn(const MySQLDBConn &);
@@ -22,18 +22,13 @@ private:
 private:
 	//static MySQLDBConn *m_SingleInstance;
 	ConnStatus m_Status;
-	MYSQL *connection;
+	MYSQL *m_Connection;
 
 public:
-	// C++ 11 or above
-	static MySQLDBConn &getInstance()
-	{
-		static MySQLDBConn instance;
-		return instance;
-	}
 	bool InitConn();
 	bool Connect(const std::string &host, const std::string &user, const std::string &pwd, const std::string &db_name);
 	void Disconnect();
+	bool ResetConn();
 	MYSQL* getConnection() const;
 	bool ExecSQLReady() const;
 	//ConnStatus getConnectionStatus() const;
