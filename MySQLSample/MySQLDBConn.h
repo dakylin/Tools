@@ -11,6 +11,9 @@ enum ConnStatus
 	Closed
 };
 
+/*
+This is not thread safe. Client should try to keep thread safe when using it
+*/
 class MySQLDBConn
 {
 public:
@@ -24,14 +27,17 @@ private:
 	ConnStatus m_Status;
 	MYSQL *m_Connection;
 
-public:
-	bool InitConn();
-	bool Connect(const std::string &host, const std::string &user, const std::string &pwd, const std::string &db_name);
+private:
 	void Disconnect();
-	bool ResetConn();
-	MYSQL* getConnection() const;
+
+public:
+	bool InitConn(/*out*/ std::string &errmsg);
+	bool Connect(const std::string &host, const std::string &user, const std::string &pwd, const std::string &db_name, /*out*/ std::string &errmsg);
+
+	bool ResetConn(std::string &errmsg);
+	MYSQL *getConnection() const;
 	bool ExecSQLReady() const;
-	//ConnStatus getConnectionStatus() const;
+	ConnStatus getConnectionStatus() const;
 };
 
 #endif
