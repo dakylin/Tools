@@ -10,18 +10,12 @@ SRCS = $(wildcard ./*.cc)
 OBJS = $(patsubst %.cc, %.o, $(SRCS))
 
 MYSQL_ROOT = /daniel/mysql
+MYSRC_ROOT = /daniel/src
 
-#HEADER_PATH = -I./include/
-#LIB_PATH = -L./lib/
+HEADER_PATH=-I$(MYSQL_ROOT)/include -I$(MYSRC_ROOT)/MySQLSample/lib
 
-#LIBS = -lpthread
-#ODBCROOT=/ODBC
-#INC=$(ODBCROOT)/include
-#HEADER_PATH=-I$(INC) ./
-#LIB_PATH =-L$(ODBCROOT)/lib
-HEADER_PATH=-I$(MYSQL_ROOT)/include
 
-LIBS=-L$(MYSQL_ROOT)/lib -Wl,-R,$(MYSQL_ROOT)/lib -lmysqlclient -lpthread -lm -lrt -lssl -lcrypto -ldl
+LIBS=-L$(MYSQL_ROOT)/lib -L$(MYSRC_ROOT)/MySQLSample/lib -Wl,-R,$(MYSQL_ROOT)/lib -lmysqlclient -lpthread -lm -lrt -lssl -lcrypto -ldl -lMySQL
 
 VERSION = 1.0.0.1
 TARGET = $(MODULE).$(VERSION)
