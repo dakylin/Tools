@@ -1,4 +1,3 @@
-#include <mysql.h>
 #include <iostream>
 #include "MySQLDBConn.h"
 

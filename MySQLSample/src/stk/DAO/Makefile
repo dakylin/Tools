@@ -10,16 +10,9 @@ SRCS = $(wildcard ./*.cc)
 OBJS = $(patsubst %.cc, %.o, $(SRCS))
 
 MYSQL_ROOT = /daniel/mysql
-
-#HEADER_PATH = -I./include/
-#LIB_PATH = -L./lib/
-
-#LIBS = -lpthread
-#ODBCROOT=/ODBC
-#INC=$(ODBCROOT)/include
-#HEADER_PATH=-I$(INC) ./
-#LIB_PATH =-L$(ODBCROOT)/lib
 HEADER_PATH=-I$(MYSQL_ROOT)/include
+
+TARGETPATH = /daniel/lib
 
 LIBS=-L$(MYSQL_ROOT)/lib -Wl,-R,$(MYSQL_ROOT)/lib -lmysqlclient -lpthread -lm -lrt -lssl -lcrypto -ldl
 
@@ -29,6 +22,8 @@ TARGET = $(MODULE).$(VERSION)
 $(TARGET) : $(OBJS)
 	$(CXX) $^ -o $@ $(LIB_PATH) $(LIBS) $(DEBUG) -shared -fPIC
 	ln -sf $(TARGET) libMySQL.so
+	mv $(TARGET) $(TARGETPATH)/
+	mv libMySQL.so $(TARGETPATH)/
 
 $(OBJS):%.o : %.cc
 	$(CXX) $(CFLAGS) $< -o $@ $(HEADER_PATH)

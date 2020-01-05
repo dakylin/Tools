@@ -2,6 +2,7 @@
 #define _MY_SQL_DB_CONN_H_
 
 #include <string>
+#include <mysql.h>
 
 enum ConnStatus
 {
