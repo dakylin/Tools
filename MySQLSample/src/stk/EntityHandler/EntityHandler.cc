@@ -1,5 +1,6 @@
 #include "EntityHandler.h"
 
+#include <stdio.h>
 
 EntityHandler::EntityHandler()
 {
@@ -40,5 +41,12 @@ bool EntityHandler::FetchEntity(EnumEntityType eType)
 		m_FetchProcedure = "call FetchUsers()";
 	}
 	std::string errmsg("");
+	//CallBack
 	return m_DBHelper->ExecQuerySQL(m_FetchProcedure, m_FetchProcedure.length(), errmsg);
+}
+
+//void CallBack(const std::string &log, int value);
+void EntityHandler::CallBack(const std::string &log, int value)
+{
+	printf("In call back log=%s, value=%d.\n", log.c_str(), value);
 }

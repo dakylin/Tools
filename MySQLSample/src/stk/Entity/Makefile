@@ -15,13 +15,12 @@ HEADER_PATH=-I$(MYSQL_ROOT)/include
 
 TARGETPATH = /daniel/lib
 
-TARGET = $(MODULE)
+TARGET = $(TARGETPATH)/$(MODULE)
 
 $(TARGET) : $(OBJS)
 	$(CXX) $^ -o $@ $(LIB_PATH) $(LIBS) $(DEBUG) -shared -fPIC
-	mv $(TARGET) $(TARGETPATH)/
 
 $(OBJS):%.o : %.cc
 	$(CXX) $(CFLAGS) $< -o $@ $(HEADER_PATH)
 clean:
-	$(RM) $(TARGET) *.o 
+	$(RM) *.o 
