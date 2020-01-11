@@ -20,7 +20,6 @@ TARGET = $(TARGETPATH)/$(MODULE)
 
 $(TARGET) : $(OBJS)
 	$(CXX) $^ -o $@ $(LIB_PATH) $(LIBS) $(DEBUG) -shared -fPIC
-	ln -sf $(TARGET) libMySQL.so
 
 $(OBJS):%.o : %.cc
 	$(CXX) $(CFLAGS) $< -o $@ $(HEADER_PATH)
