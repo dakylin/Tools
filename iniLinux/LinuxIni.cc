@@ -116,7 +116,7 @@ INI_RES LinuxIni::GetInt(const char *mAttr, const char *cAttr, int &nRes)
 		nRes = atoi(szKey);
 		return INI_SUCCESS;
 	}
-	
+
 	return ret;
 }
 
@@ -135,3 +135,7 @@ INI_RES LinuxIni::GetStr(const char *mAttr, const char *cAttr, char *cValue, siz
 	return INI_SUCCESS;
 }
 
+const MAINKEYMAP &LinuxIni::getMap() const
+{
+	return m_Map;
+}

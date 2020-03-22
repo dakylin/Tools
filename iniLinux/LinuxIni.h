@@ -31,6 +31,9 @@ public:
 	INI_RES OpenFile(const char *pathName, const char *type);
 	INI_RES CloseFile();
 
+	const MAINKEYMAP& getMap() const;
+	
+
 protected:
 	INI_RES GetKey(const char *mAttr, const char *cAttr, char *value);
 
