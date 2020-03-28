@@ -32,6 +32,8 @@ INI_RES LinuxIni::OpenFile(const char *pathName, const char *type)
 
 	m_Map.clear();
 
+	// TODO:
+	// add code to process blank " " for the line like "key = value"
 	while (fgets(strLine, CONFIGLEN, m_fp))
 	{
 		szLine.assign(strLine);
