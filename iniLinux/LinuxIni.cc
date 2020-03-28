@@ -67,6 +67,7 @@ INI_RES LinuxIni::OpenFile(const char *pathName, const char *type)
 			}
 			else
 			{
+				//This is an invalid line?
 			}
 		}
 	}
