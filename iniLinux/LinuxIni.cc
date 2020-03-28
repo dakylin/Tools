@@ -135,6 +135,7 @@ INI_RES LinuxIni::GetStr(const char *mAttr, const char *cAttr, char *cValue, siz
 	return INI_SUCCESS;
 }
 
+// I didn't find a way to check map itmes till now.
 const MAINKEYMAP &LinuxIni::getMap() const
 {
 	return m_Map;

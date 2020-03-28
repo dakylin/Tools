@@ -34,3 +34,5 @@ TEST(LinuxIniTest, OpenFile2)
 	size_t m_Count = ini.getMap().size();
 	EXPECT_EQ(3, m_Count);
 }
+
+
